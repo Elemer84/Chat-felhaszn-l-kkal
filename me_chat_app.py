@@ -14,14 +14,14 @@ class ChatApp:
 
     def create_login_frame(self):
         frame = tk.Frame(self.window)
-        frame.pack(padx=10, pady=10)
+        frame.pack(padx=300, pady=300)
 
         self.username_entry = tk.Entry(frame)
-        self.username_entry.insert(0, "Username")
+        tk.Label(frame, text="felhasználónév").pack()
         self.username_entry.pack()
 
         self.password_entry = tk.Entry(frame, show="*")
-        self.password_entry.insert(0, "Password")
+        tk.Label(frame, text="Jelszó").pack()
         self.password_entry.pack()
 
         self.register_button = tk.Button(frame, text="Register", command=self.register)
