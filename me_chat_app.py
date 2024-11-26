@@ -59,11 +59,11 @@ class ChatApp:
         if username and password:
             # Ellenőrizzük, hogy létezik-e már a felhasználó
             if self.backend.register(username, password):
-                messagebox.showinfo("Success", "Registration successful")
+                messagebox.showinfo("Siker", "Sikeresen regisztráltál")
             else:
-                messagebox.showerror("Error", "Username already exists. Please choose a different one.")
+                messagebox.showerror("Hiba", "Ez a felhasználónév már létezik")
         else:
-            messagebox.showerror("Error", "Please provide both username and password")
+            messagebox.showerror("Hiba", "Nevet és jelszót is meg kell adni")
 
     def login(self):
         username = self.username_entry.get()
@@ -75,7 +75,7 @@ class ChatApp:
             self.chat_frame.pack(padx=10, pady=10)
             self.load_messages()
         else:
-            messagebox.showerror("Error", "Invalid username or password")
+            messagebox.showerror("Hiba", "Rossz a név, vagy a jelszó")
 
     def load_messages(self):
         messages = self.backend.get_messages()
@@ -84,16 +84,13 @@ class ChatApp:
             self.message_listbox.insert(tk.END, message)
 
     def save_message(self):
-        if self.current_user:
-            message = self.message_entry.get()
-            if message:
-                self.backend.save_message(self.current_user, message)
-                self.load_messages()
-                self.message_entry.delete(0, tk.END)
-            else:
-                messagebox.showerror("Error", "Message cannot be empty")
+        message = self.message_entry.get()
+        if message:
+            self.backend.save_message(self.current_user, message)
+            self.load_messages()
+            self.message_entry.delete(0, tk.END)
         else:
-            messagebox.showerror("Error", "You must be logged in")
+            messagebox.showerror("Hiba", "Nem lehet üres üzenetet küldeni")  # Hibaüzenet üres üzenetre
 
     def delete_message(self):
         selected_index = self.message_listbox.curselection()
@@ -102,7 +99,7 @@ class ChatApp:
             self.backend.delete_message(message_line)
             self.load_messages()
         else:
-            messagebox.showerror("Error", "Please select a message to delete")
+            messagebox.showerror("Hiba", "Nincs kiválasztott üzenet amit törölni lehet")
 
     def logout(self):
         self.current_user = None
