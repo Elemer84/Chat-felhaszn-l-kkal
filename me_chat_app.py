@@ -57,8 +57,11 @@ class ChatApp:
         password = self.password_entry.get()
 
         if username and password:
-            self.backend.register(username, password)
-            messagebox.showinfo("Success", "Registration successful")
+            # Ellenőrizzük, hogy létezik-e már a felhasználó
+            if self.backend.register(username, password):
+                messagebox.showinfo("Success", "Registration successful")
+            else:
+                messagebox.showerror("Error", "Username already exists. Please choose a different one.")
         else:
             messagebox.showerror("Error", "Please provide both username and password")
 
@@ -104,7 +107,7 @@ class ChatApp:
     def logout(self):
         self.current_user = None
         self.chat_frame.pack_forget()
-        self.login_frame.pack(padx=10, pady=10)
+        self.login_frame.pack(padx=300, pady=300)
 
     def run(self):
         self.window.mainloop()

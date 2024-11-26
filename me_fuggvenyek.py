@@ -11,9 +11,24 @@ class AppBackend:
             with open(self.messages_file, 'w') as f:
                 pass  # Üres fájl létrehozása, ha nem létezik
 
+    def user_exists(self, username):
+        """ Ellenőrzi, hogy létezik-e már a felhasználó a fájlban. """
+        with open(self.users_file, 'r') as f:
+            for line in f:
+                stored_user, _ = line.strip().split(":")
+                if stored_user == username:
+                    return True  # Felhasználó már létezik
+        return False
+
     def register(self, username, password):
+        """ Felhasználó regisztrálása, ha nem létezik már a felhasználó. """
+        if self.user_exists(username):
+            return False  # Ha létezik, nem regisztráljuk újra
+
+        # Ha nem létezik, regisztráljuk
         with open(self.users_file, 'a') as f:
             f.write(f"{username}:{password}\n")
+        return True  # Sikeres regisztráció
 
     def login(self, username, password):
         with open(self.users_file, 'r') as f:
