@@ -1,15 +1,17 @@
 import os
 
+
 class AppBackend:
     def __init__(self, users_file, messages_file):
         self.users_file = users_file
         self.messages_file = messages_file
+
+        # Csak akkor hozunk létre új fájlt, ha nem létezik
         if not os.path.exists(self.users_file):
-            with open(self.users_file, 'w') as f:
-                pass  # Üres fájl létrehozása, ha nem létezik
+            open(self.users_file, 'w').close()  # Üres fájl létrehozása, ha nem létezik
+
         if not os.path.exists(self.messages_file):
-            with open(self.messages_file, 'w') as f:
-                pass  # Üres fájl létrehozása, ha nem létezik
+            open(self.messages_file, 'w').close()  # Üres fájl létrehozása, ha nem létezik
 
     def user_exists(self, username):
         """ Ellenőrzi, hogy létezik-e már a felhasználó a fájlban. """
