@@ -1,59 +1,61 @@
 import os
 
 
+def olvasas(file_path):
+    with open(file_path, "r", encoding="utf-8") as fajl:
+        for sor in fajl:
+            user = sor.strip().split(";")
+            yield user[0], user[1]
+
+
+def tarolas(file_path, nev, jelszo):
+    with open(file_path, "a", encoding="utf-8") as fajl:
+        fajl.write(f"{nev};{jelszo}\n")
+
+
+
+
 class AppBackend:
     def __init__(self, users_file, messages_file):
         self.users_file = users_file
         self.messages_file = messages_file
-
-        # Csak akkor hozunk létre új fájlt, ha nem létezik
         if not os.path.exists(self.users_file):
-            open(self.users_file, 'w').close()  # Üres fájl létrehozása, ha nem létezik
+            open(self.users_file, "w", encoding="utf-8").close()
 
         if not os.path.exists(self.messages_file):
-            open(self.messages_file, 'w').close()  # Üres fájl létrehozása, ha nem létezik
+            open(self.messages_file, "w", encoding="utf-8").close()
 
     def user_exists(self, username):
-        """ Ellenőrzi, hogy létezik-e már a felhasználó a fájlban. """
-        with open(self.users_file, 'r') as f:
-            for line in f:
-                stored_user, _ = line.strip().split(":")
-                if stored_user == username:
-                    return True  # Felhasználó már létezik
+        for stored_user, _ in olvasas(self.users_file):
+            if stored_user == username:
+                return True
         return False
 
     def register(self, username, password):
-        """ Felhasználó regisztrálása, ha nem létezik már a felhasználó. """
         if self.user_exists(username):
-            return False  # Ha létezik, nem regisztráljuk újra
-
-        # Ha nem létezik, regisztráljuk
-        with open(self.users_file, 'a') as f:
-            f.write(f"{username}:{password}\n")
-        return True  # Sikeres regisztráció
+            return False
+        tarolas(self.users_file, username, password)
+        return True
 
     def login(self, username, password):
-        with open(self.users_file, 'r') as f:
-            for line in f:
-                stored_user, stored_pass = line.strip().split(":")
-                if stored_user == username and stored_pass == password:
-                    return True
+        for stored_user, stored_pass in olvasas(self.users_file):
+            if stored_user == username and stored_pass == password:
+                return True
         return False
 
     def save_message(self, username, message):
-        with open(self.messages_file, 'a') as f:
-            f.write(f"{username}: {message}\n")
+        tarolas(self.messages_file, username, message)
 
     def get_messages(self):
-        with open(self.messages_file, 'r') as f:
+        with open(self.messages_file, "r", encoding="utf-8") as f:
             return f.readlines()
 
     def delete_message(self, message_line):
-        with open(self.messages_file, 'r') as f:
+        with open(self.messages_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
 
         if 0 <= message_line < len(lines):
             lines.pop(message_line)
 
-        with open(self.messages_file, 'w') as f:
+        with open(self.messages_file, "w", encoding="utf-8") as f:
             f.writelines(lines)
