@@ -15,7 +15,7 @@ def tarolas(file_path, nev, jelszo):
 
 
 
-class AppBackend:
+class ME_AppBackend:
     def __init__(self, users_file, messages_file):
         self.users_file = users_file
         self.messages_file = messages_file
@@ -47,15 +47,15 @@ class AppBackend:
         tarolas(self.messages_file, username, message)
 
     def get_messages(self):
-        with open(self.messages_file, "r", encoding="utf-8") as f:
-            return f.readlines()
+        with open(self.messages_file, "r", encoding="utf-8") as fajl:
+            return fajl.readlines()
 
     def delete_message(self, message_line):
-        with open(self.messages_file, "r", encoding="utf-8") as f:
-            lines = f.readlines()
+        with open(self.messages_file, "r", encoding="utf-8") as fajl:
+            lines = fajl.readlines()
 
         if 0 <= message_line < len(lines):
             lines.pop(message_line)
 
-        with open(self.messages_file, "w", encoding="utf-8") as f:
-            f.writelines(lines)
+        with open(self.messages_file, "w", encoding="utf-8") as fajl:
+            fajl.writelines(lines)
