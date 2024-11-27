@@ -11,7 +11,7 @@ A következő modulok találhatók a programban:
 
 Main.py
 
-Elösször is Importáljuk a szükséges osztályokat a megfelelő modulokból.
+Ebben a modulban csak Importáljuk a szükséges osztályokat a megfelelő modulokból.
 Létrehozunk egy backend változót az ME_AppBackend osztályból, amely a fájlokat kezeli.
 Létrehozunk app változót a ChatApp osztályból, amely a grafikus felületért felelős, és megadjuk neki hogy használja a ME_AppBackend modul funkcióit.
 majd utánna itt történik a program futtatása
